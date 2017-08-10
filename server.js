@@ -4,6 +4,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+//model
+var Comment = require('./model/comments');
 
 // and create instances
 var app = express();
@@ -11,6 +13,12 @@ var router = express.Router();
 
 // set port to either predetermined port or 30001
 var port = process.env.API_PORT || 3001;
+
+// db config
+var mongoDB = 'mongodb://kevinkabore:secretpassword@ds021694.mlab.com:21694/kaboredb';
+mongoose.connect(mongoDB, { useMongoClient: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // configure API to use bodyParser and look for JSON data in request body
 app.use(bodyParser.urlencoded({extended: true}));

@@ -49,4 +49,4 @@ class CommentForm extends Component {
   }
 }
 
-export default commentForm;
+export default CommentForm;

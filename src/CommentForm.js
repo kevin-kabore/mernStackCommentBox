@@ -29,7 +29,7 @@ class CommentForm extends Component {
 
   render() {
     return (
-      <form>
+      <form style={style.commentForm} onSubmit={this.handleSubmit}>
         <input
           type='text'
           placeholder='Your name...'

@@ -53,6 +53,7 @@ router.route('/comments')
       // res with json object of database comments
       res.json(comments)
     });
+
   })
   // post new comment to the database
   .post(function(req, res) {
@@ -68,6 +69,38 @@ router.route('/comments')
       res.json({message: 'Comment successfully added!'});
     })
   })
+
+// Route to a specific comment based on db id
+router.route('/comments/:comment_id')
+  //allows to update based on id passed to the route
+  .put(function(req, res) {
+    Comment.findById(req.params.comment_id, function(err, comment) {
+      if (err) {
+        res.send(err)
+      }
+      //setting the new author and text to whatever was changed. If nothing was changed
+      // we will not alter the field.
+      (req.body.author) ? comment.author = req.body.author : null;
+      (req.body.text) ? comment.text = req.body.text : null;
+      //save comment
+      comment.save(function(err) {
+        if(err)
+          res.send(err)
+        res.json({message: 'Comment has been updated'})
+      })
+    })
+  })
+  // delete method for removing comment from database
+  .delete(function(req, res){
+    // selects comment by its ID and removes from db
+    Comment.remove({_id: req.params.comment_id}, function(err, comment) {
+      if(err){
+        res.send(err)
+      }
+      res.json({message: 'Comment has been deleted' })
+    })
+  })
+
 // use router configuration when we call /api
 app.use('/api', router);
 
